@@ -62,6 +62,7 @@ import Html.Attributes
         , href
         , id
         , placeholder
+        , style
         , type_
         , value
         )
@@ -176,18 +177,18 @@ channelBadge : NixOSChannelStatus -> List (Html msg)
 channelBadge status =
     case status of
         Rolling ->
-            -- [ span [ class "label label-success" ] [ text "Rolling" ] ]
+            -- [ span [ class "badge badge-success" ] [ text "Rolling" ] ]
             []
 
         Beta ->
-            [ span [ class "label label-info" ] [ text "Beta" ] ]
+            [ span [ class "badge badge-info" ] [ text "Beta" ] ]
 
         Stable ->
-            -- [ span [ class "label label-success" ] [ text "Stable" ] ]
+            -- [ span [ class "badge badge-success" ] [ text "Stable" ] ]
             []
 
         Deprecated ->
-            [ span [ class "label label-warning" ] [ text "Deprecated" ] ]
+            [ span [ class "badge badge-warning" ] [ text "Deprecated" ] ]
 
 
 decodeNixOSChannels : Json.Decode.Decoder NixOSChannels
@@ -936,30 +937,35 @@ viewSearchInput :
     -> Maybe String
     -> Html c
 viewSearchInput nixosChannels outMsg categoryName selectedChannel searchQuery =
-    form
-        [ onSubmit (outMsg QueryInputSubmit)
-        , class "search-input"
-        ]
-        (div []
-            [ div []
-                [ input
-                    [ type_ "text"
-                    , id "search-query-input"
-                    , autofocus True
-                    , placeholder <| "Search for " ++ categoryName
-                    , onInput (outMsg << QueryInput)
-                    , value <| Maybe.withDefault "" searchQuery
-                    ]
-                    []
-                ]
-            , button [ class "btn", type_ "submit" ]
-                [ text "Search" ]
+    div []
+        [ form
+            [ onSubmit (outMsg QueryInputSubmit)
+            , class "row row-cols-lg-auto"
             ]
-            :: (selectedChannel
-                    |> Maybe.map (\x -> [ div [] (viewChannels nixosChannels outMsg x) ])
-                    |> Maybe.withDefault []
-               )
-        )
+            (div []
+                [ div
+                    []
+                    [ input
+                        [ type_ "text"
+                        , id "search-query-input"
+                        , autofocus True
+                        , type_ "search"
+                        , class "form-control"
+                        , placeholder <| "Search for " ++ categoryName
+                        , onInput (outMsg << QueryInput)
+                        , value <| Maybe.withDefault "" searchQuery
+                        ]
+                        []
+                    , button [ class "btn btn-primary", type_ "submit" ]
+                        [ text "Search" ]
+                    ]
+                ]
+                :: (selectedChannel
+                        |> Maybe.map (\x -> [ div [] (viewChannels nixosChannels outMsg x) ])
+                        |> Maybe.withDefault []
+                   )
+            )
+        ]
 
 
 viewChannels :
@@ -973,27 +979,25 @@ viewChannels nixosChannels outMsg selectedChannel =
             List.map .id nixosChannels
     in
     List.append
-        [ div []
-            [ h2 [] [ text "Channel: " ]
-            , div
-                [ class "btn-group"
-                , attribute "data-toggle" "buttons-radio"
-                ]
-                (List.map
-                    (\channel ->
-                        button
-                            [ type_ "button"
-                            , classList
-                                [ ( "btn", True )
-                                , ( "active", channel.id == selectedChannel )
-                                ]
-                            , onClick <| outMsg (ChannelChange channel.id)
-                            ]
-                            (List.intersperse (text " ") ([ text channel.id ] ++ channelBadge channel.status))
-                    )
-                    nixosChannels
-                )
+        [ h2 [] [ text "Channel: " ]
+        , div
+            [ class "btn-group"
+            , attribute "data-toggle" "buttons-radio"
             ]
+            (List.map
+                (\channel ->
+                    button
+                        [ type_ "button"
+                        , classList
+                            [ ( "btn", True )
+                            , ( "active", channel.id == selectedChannel )
+                            ]
+                        , onClick <| outMsg (ChannelChange channel.id)
+                        ]
+                        (List.intersperse (text " ") ([ text channel.id ] ++ channelBadge channel.status))
+                )
+                nixosChannels
+            )
         ]
         (if List.member selectedChannel channels then
             []

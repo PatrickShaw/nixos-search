@@ -8,6 +8,10 @@
   margin: 0;
 }
 
+// * {
+//   font-family: Inter;
+// }
+
 
 @mixin search-result-item() {
   .result-item-show-more-wrapper {
@@ -150,7 +154,7 @@ header .navbar.navbar-static-top {
     & > div:nth-child(2) {
       margin-bottom: 0.5em;
 
-      // "Channels: " label
+      // "Channels: " badge
       & > div > h2 {
         display: inline;
         vertical-align: middle;
@@ -554,7 +558,7 @@ header .navbar.navbar-static-top {
 /* ------------------------------------------------------------------------- */
 /* -- Accessibility overrides ---------------------------------------------- */
 /* ------------------------------------------------------------------------- */
-.label-info {
+.badge-info {
   background: #007dbb;
 }
 

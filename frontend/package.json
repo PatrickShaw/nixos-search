@@ -53,5 +53,6 @@
   },
   "prettier": {
     "tabWidth": 4
-  }
+  },
+  "packageManager": "yarn@4.0.2"
 }

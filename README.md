@@ -48,6 +48,7 @@ You can point your browser to `http://localhost:3000` and start developing.
 Any changes to source files (`./frontend/src`) will trigger a hot reload of an
 application.
 
+If you don't want to run the backend locally you can start the frontend with `PROXY_TO_SEARCH_NIXOS_ORG=true`.
 
 ## Deploying
 

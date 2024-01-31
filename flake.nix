@@ -1,7 +1,7 @@
 {
   description = "Code behind search.nixos.org";
 
-  nixConfig.extra-substituters = [ "https://nixos-search.cachix.org" ];
+  nixConfig.extra-trusted-substituters = [ "https://nixos-search.cachix.org" ];
   nixConfig.extra-trusted-public-keys = [ "nixos-search.cachix.org-1:1HV3YF8az4fywnH+pAd+CXFEdpTXtv9WpoivPi+H70o=" ];
 
   inputs.nixpkgs.url = "nixpkgs/nixos-unstable";

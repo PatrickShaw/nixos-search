@@ -381,16 +381,14 @@ view model =
     , body =
         [ div []
             [ header []
-                [ div [ class "navbar navbar-static-top" ]
+                [ div [ class "navbar navbar-light bg-light navbar-static-top" ]
                     [ div [ class "navbar-inner" ]
-                        [ div [ class "container" ]
-                            [ a [ class "brand", href "https://nixos.org" ]
+                        [ div [ class "container-fluid" ]
+                            [ a [ class "navbar-brand", href "https://nixos.org" ]
                                 [ img [ alt "NixOS logo", src "https://nixos.org/logo/nix-wiki.png", class "logo" ] []
                                 ]
-                            , div []
-                                [ ul [ class "nav pull-left" ]
-                                    (viewNavigation model.route)
-                                ]
+                            , ul [ class "nav" ]
+                                (viewNavigation model.route)
                             ]
                         ]
                     ]
@@ -439,12 +437,12 @@ viewNavigation route =
                     _ ->
                         Route.SearchArgs Nothing Nothing Nothing Nothing Nothing Nothing Nothing Nothing
     in
-    li [] [ a [ href "https://nixos.org" ] [ text "Back to nixos.org" ] ]
+    li [ class "nav-item" ] [ a [ class "nav-link", href "https://nixos.org" ] [ text "Back to nixos.org" ] ]
         :: List.map
             (viewNavigationItem route)
             [ ( Route.Packages searchArgs, text "Packages" )
             , ( Route.Options searchArgs, text "NixOS options" )
-            , ( Route.Flakes searchArgs, span [] [ text "Flakes", sup [] [ span [ class "label label-info" ] [ small [] [ text "Experimental" ] ] ] ] )
+            , ( Route.Flakes searchArgs, span [] [ text "Flakes", sup [] [ span [ class "badge badge-info" ] [ small [] [ text "Experimental" ] ] ] ] )
             ]
 
 
@@ -454,8 +452,8 @@ viewNavigationItem :
     -> Html Msg
 viewNavigationItem currentRoute ( route, title ) =
     li
-        [ classList [ ( "active", currentRoute == route ) ] ]
-        [ a [ Route.href route ] [ title ] ]
+        [ classList [ ( "nav-item", True ), ( "active", currentRoute == route ) ] ]
+        [ a [ class "nav-link", Route.href route ] [ title ] ]
 
 
 viewPage : Model -> Html Msg

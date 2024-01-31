@@ -16,6 +16,13 @@ const dev = {
             publicPath: "/",
             stats: "errors-only"
         },
+        proxy: process.env.PROXY_TO_SEARCH_NIXOS_ORG === 'true' ? {
+            '/backend': {
+                target: 'https://search.nixos.org',
+                changeOrigin: true,
+                secure: true
+            }
+        } : undefined,
         historyApiFallback: true,
         // feel free to delete this section if you don't need anything like this
         onBeforeSetupMiddleware: function (devServer) {
